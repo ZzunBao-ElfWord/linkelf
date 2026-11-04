@@ -1,0 +1,140 @@
+# ============================================================
+# 连接精灵链 - 后端服务配置
+# 默认 dev 模式：无链节点、无 MySQL、无 Redis 也可启动
+# 生产环境使用 prod profile（application-prod.yml）
+# ============================================================
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+spring:
+  application:
+    name: linksprite-backend
+  profiles:
+    active: dev
+  # 仅排除 JPA 与 Redis 自动装配：浏览器索引器只用 JdbcTemplate，不需要 JPA 实体与 Redis
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
+  # 轻量区块链浏览器索引库（数据库不可用时按需懒建立连接，不阻塞启动）
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB_URL:jdbc:mysql://127.0.0.1:3306/linkelf_explorer?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai}
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:root}
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 1
+      # 数据库暂不可用时不阻塞启动，按需懒建立连接
+      initialization-fail-timeout: -1
+
+# ============================================================
+# FISCO BCOS 链配置
+# dev 模式 enabled=false：服务可启动，链上接口返回明确的"未启用"错误
+# 接入真实链时改为 true 并配置证书与节点
+# ============================================================
+fisco:
+  enabled: false
+  # 合约部署高危接口开关（POST /api/deploy/contracts），默认关闭，确认链环境就绪再开启
+  deploy-enabled: false
+  crypto-type: SM
+  peers:
+    - 127.0.0.1:20200
+    - 127.0.0.1:20201
+    - 127.0.0.1:20202
+    - 127.0.0.1:20203
+  group-id: group0
+  chain-id: "1000"
+  cert-path: file:cert
+  check-node-on-startup: true
+  connect-timeout: 5000
+  account:
+    file-format: pem
+    account-file: sdk.pem
+    account-address: ""
+    password: ""
+  thread-pool:
+    core-pool-size: 10
+    max-pool-size: 50
+    queue-capacity: 100
+
+# ============================================================
+# 合约地址配置（已部署，国密 SM3 selector）
+# ============================================================
+contract:
+  authorization-registry: "0x11470ee0df7e3b956b4a1a2f234c04fd80fa9bab"
+  linksprite-nft: "0x7686bdb00e51689d3923d8ca4b38ec45ec3d03ab"
+  transfer-policy: "0x7859d6aec0a0491959aaa054eeeb374495cb5700"
+  kyc-registry: "0xb96b1ceb674d7b8fb09d2151d329f48d36f9ab42"
+  sprite-compute-token: "0xf458ec8eb469ea73a07596f2a41834be5ca8868a"
+  ai-account-factory: "0x2f6270af48b70784577eb18312d9468d457f6ea6"
+  paymaster: "0x388baf0fddec40528e9c4824d748dfa6981862e9"
+
+# ============================================================
+# 蚂蚁链确权配置（UGC 流程用）
+# ============================================================
+antchain:
+  quezao:
+    # 商务开通鹊凿后，按下发文档填写；未开通保持 false，确权接口返回明确错误
+    enabled: false
+    app-key: ""
+    app-secret: ""
+    endpoint: ""
+    version: ""
+    tenant-id: ""
+    sign-type: HMAC-SHA256
+    methods:
+      deposit: ""
+      query: ""
+      dci: ""
+      forensic: ""
+  open-chain:
+    access-id: ""
+    access-secret: ""
+    endpoint: ""
+
+# ============================================================
+# API-Key 鉴权（环境变量 LINKSPRITE_API_KEY；旧版全局 key，保留兼容）
+# ============================================================
+linksprite:
+  api-key: ${LINKSPRITE_API_KEY:}
+
+# ============================================================
+# 多租户鉴权配置
+# - tenants-file：租户 JSON 文件（不存在视为空列表，目录自动创建）
+# - audit-log：审计日志路径，按天轮转为 <前缀>-yyyy-MM-dd.jsonl
+# - ops-token：/internal/** 运维令牌，未配置时内部接口返回 503
+# ============================================================
+app:
+  tenants-file: ${LINKSPRITE_TENANTS_FILE:tenants.json}
+  audit-log: ${LINKSPRITE_AUDIT_LOG:logs/api-audit.jsonl}
+  ops-token: ${LINKSPRITE_OPS_TOKEN:}
+
+# ============================================================
+# 轻量区块链浏览器（只读 REST + 零构建静态前端 explorer-web）
+# - enabled 默认 false：不启动轮询、不注册浏览器接口
+# - 开启前先执行 src/main/resources/explorer/schema.sql 建库建表
+# ============================================================
+explorer:
+  enabled: ${EXPLORER_ENABLED:false}
+  poll-ms: ${EXPLORER_POLL_MS:2000}
+  backfill-blocks: ${EXPLORER_BACKFILL_BLOCKS:100}
+  group-id: ${EXPLORER_GROUP_ID:0}
+
+# ============================================================
+# 日志
+# ============================================================
+logging:
+  level:
+    com.linksprite: info
+    org.fisco: warn
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"

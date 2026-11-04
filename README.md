@@ -10,7 +10,7 @@
 |------|--------|------|------|
 | [openelf](https://github.com/ZzunBao-ElfWord/OpenElf) | 开放精灵 | AI 网红创作平台主 App · Flutter | ✅ 主开发 |
 | [hualing](https://github.com/ZzunBao-ElfWord/hualing) | 画灵儿 | Pure-Dart 开源绘图引擎 | ✅ 开源已发布 |
-| [koko](https://github.com/ZzunBao-ElfWord/koko) | 空空 | 空空主 App | 🚧 规划中 |
+| [koko](https://github.com/ZzunBao-ElfWord/koko) | 空空 | kokokongkong.com · Flutter + Admin Web + NFT 生成器 | ✅ 完整仓库 |
 | [kongkongmusic](https://github.com/ZzunBao-ElfWord/kongkongmusic) | 空空音乐 | AI 音乐生成子项目 | 🚧 规划中 |
 | [kongkonggames](https://github.com/ZzunBao-ElfWord/kongkonggames) | 空空电竞 | AI 电竞直播子项目 | 🚧 规划中 |
 | [**linkelf**](https://github.com/ZzunBao-ElfWord/linkelf) | 链接精灵 | FISCO BCOS 联盟链能力层 | ✅ 已上线 |
@@ -30,11 +30,12 @@
 | 层 | 技术 | 说明 |
 |----|------|------|
 | 链 | FISCO BCOS 3.7.0 | 单节点 · TLS · ECDSA |
-| 合约 | 7 个核心合约 | AIAccountFactory · KYCRegistry · LinkSpriteNFT · AuthorizationRegistry · Paymaster · SpriteComputeToken · TransferPolicy |
-| 索引 | 每 2s 增量同步 | 冷启动回补最近 100 块 |
-| 后端 | Go + Node.js | 接入层（Go）+ 沙箱服务（Node 20 零依赖） |
-| 查询 | 公开 API + IP 限流 | 浏览器索引器 |
-| 前端 | 原生 HTML/JS/CSS | linkelf.work 官网 + 沙箱页面 |
+| 合约 | Solidity 7 个核心合约 | AIAccountFactory · KYCRegistry · LinkSpriteNFT · AuthorizationRegistry · Paymaster · SpriteComputeToken · TransferPolicy |
+| 后端 | Java 17 + Spring Boot 3 | 联盟链核心服务 + explorer 索引器 + 多租户鉴权（linksprite-backend/） |
+| 沙箱 | Node 20 零依赖 | 租户自助申请服务（linkelf-sandbox/） |
+| 查询 | 公开 API + IP 限流 | ExplorerIndexer 每 2s 增量同步 |
+| 前端 | 原生 HTML/JS/CSS | linkelf.work 官网 + 浏览器前端 + 沙箱页面 |
+| 部署 | Docker Compose + systemd | FISCO BCOS 节点 + 后端 + 监控 |
 
 ## 仓库结构
 
@@ -43,7 +44,7 @@ linkelf/
 ├── README.md
 ├── LICENSE
 ├── .gitignore
-├── linkelf-site/              # 🌐 linkelf.work 官网 + 浏览器 + 沙箱
+├── linkelf-site/              # 🌐 linkelf.work 官网 + 浏览器 + 沙箱前端
 │   ├── index.html             # 官网首页
 │   ├── main.js                # 官网交互
 │   ├── styles.css             # 官网样式
@@ -51,8 +52,8 @@ linkelf/
 │   ├── wechat-qr.jpg          # 商务微信二维码
 │   ├── serve.py               # 本地静态服务器（Python 3，零依赖）
 │   ├── browser/               # 📜 LinkSprite Explorer · 轻量区块链浏览器
-│   │   ├── index.html         # 5 个路由：概览 / 区块 / 交易 / Token / 授权
-│   │   ├── app.js             # 浏览器前端逻辑（搜索 + 分页 + API 调用）
+│   │   ├── index.html         # 5 路由：概览 / 区块 / 交易 / Token / 授权
+│   │   ├── app.js             # 浏览器前端（搜索 + 分页 + API 调用）
 │   │   └── app.css
 │   ├── sandbox/               # 🧪 沙箱自助申请页（前端）
 │   │   ├── index.html
@@ -60,6 +61,43 @@ linkelf/
 │   │   └── sandbox.js
 │   └── deploy/
 │       └── linkelf.work.conf # nginx 部署配置
+├── linksprite-backend/        # ☕ Java 17 + Spring Boot 3 · 联盟链后端（114 files）
+│   ├── pom.xml                # Maven 项目配置
+│   ├── Dockerfile
+│   ├── docker-compose.yml
+│   ├── deploy/                # 部署脚本 + schema.sql + e2e-check
+│   ├── explorer-web/          # 📜 浏览器前端备选版本（和 linkelf-site/browser/ 同源）
+│   └── src/main/java/com/linksprite/
+│       ├── LinkSpriteApplication.java
+│       ├── common/            # ApiKeyFilter / GlobalExceptionHandler / Result
+│       ├── config/            # FiscoBcosConfig / ContractConfig / ExplorerConfig
+│       ├── contract/          # 7 合约 Java 封装（AIAccountFactory / KYCRegistry / LinkSpriteNFT / AuthorizationRegistry / Paymaster / SpriteComputeToken / TransferPolicy）
+│       ├── controller/        # REST API（Ai / Nft / Kyc / Authorization / Wallet / TenantAdmin / Deploy / Health / WorkSubmission）
+│       ├── explorer/          # 🔍 ExplorerIndexer + ExplorerRepository + ExplorerController（每 2s 增量同步）
+│       ├── service/           # 业务服务层（Nft / Kyc / Authorization / Wallet / ChainStatus / ContractDeployment / AntCopyright ...）
+│       ├── tenant/            # 🛡️ 多租户鉴权核心（Tenant / TenantStore / RateLimiter / ScopeResolver）
+│       └── resources/
+│           ├── application.yml
+│           └── explorer/     # schema.sql + upgrade.sql
+├── linksprite-chain/          # ⛓️ FISCO BCOS 链合约 + 部署脚本（30 files）
+│   ├── README.md
+│   ├── config/genesis-template.json
+│   ├── contracts/             # 7 个 Solidity 合约源码
+│   │   ├── AIAccount.sol
+│   │   ├── AIAccountFactory.sol
+│   │   ├── KYCRegistry.sol
+│   │   ├── LinkSpriteNFT.sol
+│   │   ├── AuthorizationRegistry.sol
+│   │   ├── Paymaster.sol
+│   │   ├── SpriteComputeToken.sol
+│   │   └── TransferPolicy.sol
+│   └── deploy/                # 链部署运维脚本
+│       ├── install_fisco.sh
+│       ├── compile_contracts.sh
+│       ├── deploy_contracts.sh
+│       ├── start_chain.sh / stop_chain.sh
+│       ├── linksprite-chain.service
+│       └── linksprite-backend.service
 ├── linkelf-sandbox/           # 🧪 沙箱后端服务（Node 20，内置 http 模块）
 │   ├── server.js              # 租户自助申请 + 到期扫描 + API Key 下发
 │   └── linksprite-sandbox.service  # systemd unit

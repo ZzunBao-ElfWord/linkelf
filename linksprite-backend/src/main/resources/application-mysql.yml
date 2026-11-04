@@ -1,0 +1,29 @@
+spring:
+  # 启用数据源（覆盖 application.yml 中对 DataSource 的排除），只保留 Redis 排除
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://127.0.0.1:3306/linksprite?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:root}
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 1
+      # MySQL 容器可能比后端晚就绪：不在启动时强制探活，连接按需懒建立，
+      # 保证数据库短暂不可用时其它接口（NFT/B端等）不受影响
+      initialization-fail-timeout: -1
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
+
+# 作品收单开关：仅在有数据源时开启（dev profile 下无数据源，保持关闭以免启动失败）
+linksprite:
+  work-submission:
+    enabled: true

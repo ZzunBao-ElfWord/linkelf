@@ -1,0 +1,82 @@
+# 连接精灵链后端 — 服务器编排（部署目录 /opt/linksprite）
+# 网络与 Caddy（stoat_default）互通，Caddy 反代块: nft.kokokongkong.com -> linksprite-backend:8080
+#
+# 作品收单需要 MySQL：
+#   在 /opt/linksprite/.env 设置 SPRING_PROFILES_ACTIVE=mysql（否则默认 dev，不连数据库）
+#   然后 `docker compose up -d --build`（MySQL 与后端一起启动）
+services:
+  linksprite-backend:
+    build: .
+    container_name: linksprite-backend
+    restart: unless-stopped
+    mem_limit: 512m
+    environment:
+      # 默认 dev（fisco.enabled=false）：无需 MySQL/Redis/链节点即可运行
+      # 收单时改为 mysql（见文件头说明）
+      - SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE:-dev}
+      # API-Key：服务器 .env 中配置 LINKSPRITE_API_KEY；为空则不校验
+      - LINKSPRITE_API_KEY=${LINKSPRITE_API_KEY:-}
+      # 收单数据源（mysql profile 生效时使用；容器内主机名为 mysql）
+      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL:-jdbc:mysql://mysql:3306/linksprite?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true}
+      - SPRING_DATASOURCE_USERNAME=${MYSQL_USER:-root}
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD:-linksprite}
+      # 链连接（建链后 .env 置 FISCO_ENABLED=true；部署合约时临时 FISCO_DEPLOY_ENABLED=true）
+      - FISCO_ENABLED=${FISCO_ENABLED:-false}
+      - FISCO_DEPLOY_ENABLED=${FISCO_DEPLOY_ENABLED:-false}
+      - FISCO_PEERS=${FISCO_PEERS:-host.docker.internal:20200}
+      # 合约地址（POST /api/deploy/contracts 部署后写入 .env 并重建容器）
+      - CONTRACT_KYC_REGISTRY=${CONTRACT_KYC_REGISTRY:-}
+      - CONTRACT_TRANSFER_POLICY=${CONTRACT_TRANSFER_POLICY:-}
+      - CONTRACT_AUTHORIZATION_REGISTRY=${CONTRACT_AUTHORIZATION_REGISTRY:-}
+      - CONTRACT_LINKSPRITE_NFT=${CONTRACT_LINKSPRITE_NFT:-}
+      - CONTRACT_SPRITE_COMPUTE_TOKEN=${CONTRACT_SPRITE_COMPUTE_TOKEN:-}
+      - CONTRACT_AI_ACCOUNT_FACTORY=${CONTRACT_AI_ACCOUNT_FACTORY:-}
+      - CONTRACT_PAYMASTER=${CONTRACT_PAYMASTER:-}
+    extra_hosts:
+      # 链节点跑在宿主机，容器经宿主网关访问 channel 端口
+      - "host.docker.internal:host-gateway"
+    volumes:
+      # 国密证书，当前开发模式不加载；建链启用时无需重传
+      - ./cert:/app/cert:ro
+    networks:
+      - stoat_default
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/api/health >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
+
+  # 作品收单存储
+  mysql:
+    image: mysql:8.0
+    container_name: linksprite-mysql
+    restart: unless-stopped
+    mem_limit: 384m
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --innodb-buffer-pool-size=64M
+      - --performance-schema=OFF
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD:-linksprite}
+      - MYSQL_DATABASE=linksprite
+    volumes:
+      - mysql-data:/var/lib/mysql
+      # 首次启动自动建表
+      - ./deploy/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    networks:
+      - stoat_default
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 20s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+
+networks:
+  stoat_default:
+    external: true
+
+volumes:
+  mysql-data:

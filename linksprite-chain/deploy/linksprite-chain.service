@@ -1,0 +1,14 @@
+[Unit]
+Description=LinkSprite Chain (FISCO BCOS 4-node, guomi)
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/bin/bash /root/linksprite/start_chain.sh
+ExecStop=/bin/bash /root/linksprite/stop_chain.sh
+Restart=on-failure
+RestartSec=5
+TimeoutStartSec=60
+
+[Install]
+WantedBy=multi-user.target

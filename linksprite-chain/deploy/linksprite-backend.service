@@ -1,0 +1,15 @@
+[Unit]
+Description=LinkSprite Backend (Spring Boot, FISCO BCOS)
+After=linksprite-chain.service
+
+[Service]
+Type=simple
+WorkingDirectory=/root/linksprite-backend
+ExecStart=/usr/bin/java -jar /root/linksprite-backend/linksprite-backend-1.0.0.jar --fisco.enabled=true
+Restart=on-failure
+RestartSec=10
+StandardOutput=append:/root/linksprite-backend/app.log
+StandardError=append:/root/linksprite-backend/app.log
+
+[Install]
+WantedBy=multi-user.target

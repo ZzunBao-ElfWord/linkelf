@@ -1,0 +1,27 @@
+{
+  "id": "linksprite_genesis",
+  "version": "1.0",
+  "chainID": "linksprite_chain",
+  "groupID": "group0",
+  "smCryptoType": true,
+  "consensusType": "pbft",
+  "gasLimit": 3000000000,
+  "gasPrice": 300000000,
+  "timestamp": 0,
+  "feature_balance": 1,
+  "feature_balance_precompiled": 1,
+  "sealers": [
+    "0x0000000000000000000000000000000000000000000000000000000000000001",
+    "0x0000000000000000000000000000000000000000000000000000000000000002",
+    "0x0000000000000000000000000000000000000000000000000000000000000003",
+    "0x0000000000000000000000000000000000000000000000000000000000000004"
+  ],
+  "web3": {
+    "chain_id": 20260
+  },
+  "alloc": {
+    "0x_PLATFORM_ADDRESS_": {
+      "balance": "1000000000000000000000000"
+    }
+  }
+}
