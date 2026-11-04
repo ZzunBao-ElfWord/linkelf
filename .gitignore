@@ -1,0 +1,31 @@
+# Dependencies
+vendor/
+node_modules/
+
+# Build outputs
+bin/
+dist/
+build/
+*.so
+*.dylib
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Env & secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.crt
+*.p12
