@@ -1,0 +1,22 @@
+[Unit]
+Description=LinkSprite Sandbox Service
+After=network.target linksprite-backend.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/linksprite/sandbox
+EnvironmentFile=/etc/linksprite.env
+Environment=SANDBOX_PORT=8090
+Environment=SANDBOX_DIR=/opt/linksprite/sandbox/data
+Environment=SANDBOX_BACKEND=http://127.0.0.1:8080/api
+Environment=SANDBOX_TTL_DAYS=30
+Environment=SANDBOX_QPS=3
+Environment=SANDBOX_DAILY_QUOTA=500
+Environment=SANDBOX_MAX_PER_IP_DAY=3
+ExecStart=/usr/bin/node /opt/linksprite/sandbox/server.js
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

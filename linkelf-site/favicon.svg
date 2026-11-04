@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="LinkElf">
+  <rect width="64" height="64" rx="14" fill="#070b13"/>
+  <polygon points="32,8 55,21 55,43 32,56 9,43 9,21" fill="none" stroke="#c8ff4d" stroke-width="2"/>
+  <polygon points="32,17 47,25 47,39 32,47 17,39 17,25" fill="none" stroke="#57e9ff" stroke-width="1.2" opacity=".55"/>
+  <circle cx="32" cy="32" r="5" fill="#c8ff4d"/>
+  <circle cx="32" cy="8" r="2" fill="#c8ff4d"/>
+  <circle cx="55" cy="43" r="2" fill="#57e9ff"/>
+  <circle cx="9" cy="43" r="2" fill="#57e9ff"/>
+</svg>

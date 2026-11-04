@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkSprite Explorer · 轻量区块链浏览器</title>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#/">
+      <span class="brand-mark">◈</span>
+      <span class="brand-text">LinkSprite <b>Explorer</b></span>
+    </a>
+    <nav class="nav">
+      <a href="#/" data-nav="home">概览</a>
+      <a href="#/blocks" data-nav="blocks">区块</a>
+      <a href="#/txs" data-nav="txs">交易</a>
+      <a href="#/tokens" data-nav="tokens">Token</a>
+      <a href="#/auths" data-nav="auths">授权</a>
+    </nav>
+  </header>
+
+  <section class="search-wrap">
+    <form class="search" id="search-form" autocomplete="off">
+      <span class="search-icon">⌕</span>
+      <input id="search-input" type="text" placeholder="搜索区块高度 / 交易哈希 / 地址" spellcheck="false">
+      <button type="submit">搜索</button>
+    </form>
+    <div class="search-hint" id="search-hint"></div>
+  </section>
+
+  <main id="app" class="app">
+    <div class="loading">正在加载链上数据…</div>
+  </main>
+
+  <footer class="footer">
+    <span>LinkSprite Explorer</span>
+    <span class="dot">·</span>
+    <span>只读索引服务</span>
+    <span class="dot">·</span>
+    <span id="footer-status">FISCO BCOS</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

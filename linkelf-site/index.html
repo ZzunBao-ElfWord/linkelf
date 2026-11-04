@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>链接精灵 LinkElf · AI 原生可信链接层</title>
+  <meta name="description" content="链接精灵 LinkElf 为 AI 企业提供覆盖身份、形象、数据、模型、智能体协作与金融结算的全生命周期区块链服务。国产联盟链底座，可验证、可编程、可审计。">
+  <meta name="theme-color" content="#05070c">
+  <meta property="og:title" content="链接精灵 LinkElf · AI 原生可信链接层">
+  <meta property="og:description" content="为 AI 企业提供全生命周期的区块链服务：AI 身份、AI 形象、数据确权、智能体协作、AI 金融与内容溯源。">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <script>document.documentElement.classList.add('has-js');</script>
+</head>
+<body>
+
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="i-id" viewBox="0 0 24 24">
+    <path d="M12 3a7 7 0 0 0-7 7v5a7 7 0 0 0 14 0v-5a7 7 0 0 0-7-7Z" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M9 10v5M15 10v5M12 8v9" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".7"/>
+    <circle cx="12" cy="6.5" r="1.4" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-avatar" viewBox="0 0 24 24">
+    <rect x="3.5" y="3.5" width="17" height="17" rx="3" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <circle cx="12" cy="10" r="2.6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <path d="M7.2 18c.8-2.7 2.6-4 4.8-4s4 1.3 4.8 4" fill="none" stroke="currentColor" stroke-width="1.5"/>
+  </symbol>
+  <symbol id="i-data" viewBox="0 0 24 24">
+    <ellipse cx="12" cy="6" rx="6.5" ry="2.6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M5.5 6v6c0 1.45 2.9 2.6 6.5 2.6s6.5-1.15 6.5-2.6V6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M5.5 12v6c0 1.45 2.9 2.6 6.5 2.6s6.5-1.15 6.5-2.6v-6" fill="none" stroke="currentColor" stroke-width="1.6"/>
+  </symbol>
+  <symbol id="i-model" viewBox="0 0 24 24">
+    <rect x="6" y="6" width="12" height="12" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M9.5 9.5h5v5h-5z" fill="currentColor" opacity=".35"/>
+    <path d="M9 3.5v2.5M12 3.5v2.5M15 3.5v2.5M9 18v2.5M12 18v2.5M15 18v2.5M3.5 9H6M3.5 12H6M3.5 15H6M18 9h2.5M18 12h2.5M18 15h2.5" stroke="currentColor" stroke-width="1.2"/>
+  </symbol>
+  <symbol id="i-agent" viewBox="0 0 24 24">
+    <circle cx="5.5" cy="12" r="2.2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <circle cx="18.5" cy="6.5" r="2.2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <circle cx="18.5" cy="17.5" r="2.2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+    <circle cx="12" cy="12" r="2.2" fill="currentColor" opacity=".5"/>
+    <path d="m7.4 11 3.2-.8M13.8 10.6l3-2.5M13.8 13.4l3 2.5" fill="none" stroke="currentColor" stroke-width="1.3" opacity=".8"/>
+  </symbol>
+  <symbol id="i-finance" viewBox="0 0 24 24">
+    <path d="M4 8.5h11.5a3.5 3.5 0 0 1 0 7H8" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M16.5 4.5 20 8.5l-3.5 4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-compute" viewBox="0 0 24 24">
+    <rect x="4.5" y="4.5" width="15" height="15" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <rect x="8.5" y="8.5" width="7" height="7" rx="1.2" fill="currentColor" opacity=".35"/>
+    <path d="M8 2.5v2M12 2.5v2M16 2.5v2M8 19.5v2M12 19.5v2M16 19.5v2M2.5 8h2M2.5 12h2M2.5 16h2M19.5 8h2M19.5 12h2M19.5 16h2" stroke="currentColor" stroke-width="1.2"/>
+  </symbol>
+  <symbol id="i-provenance" viewBox="0 0 24 24">
+    <path d="M12 3.2 19 6v5.2c0 4.6-3 7.4-7 9.6-4-2.2-7-5-7-9.6V6l7-2.8Z" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="m8.5 11.5 2.4 2.4 4.6-4.6" fill="none" stroke="currentColor" stroke-width="1.8"/>
+  </symbol>
+  <symbol id="i-governance" viewBox="0 0 24 24">
+    <circle cx="9" cy="9.5" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="m12.4 12.8 7.1 7.1M16 16.4l2.4 2.4M18 14.4l2.4 2.4" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <circle cx="9" cy="9.5" r="1.4" fill="currentColor" opacity=".5"/>
+  </symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24">
+    <path d="M12 3 19 6v5c0 4.5-3 7.4-7 9.5-4-2.1-7-5-7-9.5V6l7-3Z" fill="none" stroke="currentColor" stroke-width="1.7"/>
+    <path d="M12 6.5v9M8.5 10.5h7" stroke="currentColor" stroke-width="1.4" opacity=".65"/>
+  </symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24">
+    <path d="m12 3 9 4.5-9 4.5-9-4.5L12 3Z" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="m3 12 9 4.5 9-4.5M3 16.5 12 21l9-4.5" fill="none" stroke="currentColor" stroke-width="1.6" opacity=".65"/>
+  </symbol>
+  <symbol id="i-key" viewBox="0 0 24 24">
+    <circle cx="7.5" cy="12" r="3.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+    <path d="M11 12h9M16 12v3M19 12v2.2" fill="none" stroke="currentColor" stroke-width="1.6"/>
+  </symbol>
+  <symbol id="i-api" viewBox="0 0 24 24">
+    <path d="M8 4.5 3.5 12 8 19.5M16 4.5 20.5 12 16 19.5" fill="none" stroke="currentColor" stroke-width="1.7"/>
+    <path d="M13.5 7 11 17" stroke="currentColor" stroke-width="1.7" opacity=".65"/>
+  </symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24">
+    <path d="M5 12h13M13.5 7.5 18 12l-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.7"/>
+  </symbol>
+</svg>
+
+<header class="site-header" id="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="#top" aria-label="链接精灵 LinkElf 首页">
+      <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">
+        <defs>
+          <linearGradient id="brandGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#c8ff4d"/>
+            <stop offset="1" stop-color="#57e9ff"/>
+          </linearGradient>
+        </defs>
+        <polygon points="24,3 43,13.5 43,34.5 24,45 5,34.5 5,13.5" fill="none" stroke="url(#brandGrad)" stroke-width="1.6"/>
+        <polygon points="24,11 35.5,17.5 35.5,30.5 24,37 12.5,30.5 12.5,17.5" fill="none" stroke="currentColor" stroke-width="1" opacity=".35"/>
+        <circle cx="24" cy="24" r="4.2" fill="#c8ff4d"/>
+        <circle cx="24" cy="11" r="1.8" fill="currentColor" opacity=".7"/>
+        <circle cx="35.5" cy="30.5" r="1.8" fill="currentColor" opacity=".55"/>
+        <circle cx="12.5" cy="30.5" r="1.8" fill="currentColor" opacity=".55"/>
+      </svg>
+      <span class="brand-text">链接精灵<span class="brand-en">LINKELF</span></span>
+    </a>
+
+    <button class="nav-toggle" id="nav-toggle" aria-label="打开导航" aria-expanded="false" aria-controls="site-nav">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="site-nav" id="site-nav" aria-label="主导航">
+      <a href="#services">核心能力</a>
+      <a href="#advantages">为什么选择</a>
+      <a href="#architecture">技术架构</a>
+      <a href="#solutions">解决方案</a>
+      <a href="#roadmap">演进路线</a>
+    </nav>
+
+    <div class="header-actions">
+      <a class="link-browser" href="/browser/">
+        <span class="status-dot"></span>区块链浏览器
+      </a>
+      <a class="btn btn-sm" href="#wechat" data-wechat-open>接入咨询</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="top">
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="hero-glow" aria-hidden="true"></div>
+
+    <div class="wrap hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow" data-reveal><span class="eyebrow-dot"></span>AI-NATIVE TRUST LAYER · 国产联盟链</p>
+        <h1 data-reveal data-delay="1">让 AI 的一生<br><span class="grad-text">都有链可依</span></h1>
+        <p class="hero-sub" data-reveal data-delay="2">
+          链接精灵为 AI 企业提供身份、形象、数据与价值的链上确权、授权与结算能力，
+          覆盖 AI 从诞生、成长、协作到流通的全生命周期。
+        </p>
+        <div class="hero-cta" data-reveal data-delay="3">
+          <a class="btn" href="#services">查看全生命周期能力<svg class="icon"><use href="#i-arrow"/></svg></a>
+          <a class="btn btn-ghost" href="/browser/">打开区块链浏览器<span class="arrow-mark">↗</span></a>
+        </div>
+        <ul class="hero-points" data-reveal data-delay="4">
+          <li>7 个核心合约 · 已上线运行</li>
+          <li>多租户隔离 · 全链路审计</li>
+          <li>HTTP API · 轻量接入</li>
+        </ul>
+      </div>
+
+      <div class="hero-visual" data-reveal data-delay="2">
+        <div class="orbit-stage" aria-hidden="true">
+          <div class="orbit-ring ring-outer">
+            <span class="orbit-node n1"></span>
+            <span class="orbit-node n2"></span>
+            <span class="orbit-node n3"></span>
+          </div>
+          <div class="orbit-ring ring-mid">
+            <span class="orbit-node n4"></span>
+            <span class="orbit-node n5"></span>
+          </div>
+          <div class="orbit-ring ring-inner"></div>
+          <div class="orbit-scan"></div>
+          <div class="orbit-core">
+            <span class="core-label">TRUST</span>
+            <strong>AI</strong>
+            <span class="core-sub">CORE</span>
+          </div>
+          <span class="orbit-tag tag-a">IDENTITY</span>
+          <span class="orbit-tag tag-b">VALUE</span>
+          <span class="orbit-tag tag-c">PROVENANCE</span>
+          <span class="orbit-tag tag-d">AGENT</span>
+        </div>
+
+        <div class="live-panel">
+          <div class="live-head">
+            <span class="pulse-dot"></span>
+            <span class="mono">CHAIN / LIVE</span>
+            <span class="live-status" id="live-status">连接中</span>
+          </div>
+          <dl class="live-grid">
+            <div><dt>最新区块</dt><dd id="stat-block">—</dd></div>
+            <div><dt>交易总数</dt><dd id="stat-tx">—</dd></div>
+            <div><dt>Token</dt><dd id="stat-token">—</dd></div>
+            <div><dt>授权记录</dt><dd id="stat-auth">—</dd></div>
+          </dl>
+          <a class="live-link" href="/browser/">查看链上明细<span class="arrow-mark">↗</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap stat-strip" data-reveal>
+      <div class="stat"><strong>07</strong><span>核心智能合约</span></div>
+      <div class="stat"><strong>2<span class="unit">s</span></strong><span>索引同步周期</span></div>
+      <div class="stat"><strong>09</strong><span>AI 服务方向</span></div>
+      <div class="stat"><strong>100<span class="unit">%</span></strong><span>操作可审计</span></div>
+    </div>
+  </section>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span>AI 身份</span><i></i><span>AI 形象</span><i></i><span>数据与记忆</span><i></i><span>模型与技能</span><i></i><span>智能体协作</span><i></i><span>AI 金融</span><i></i><span>算力结算</span><i></i><span>内容溯源</span><i></i><span>授权治理</span><i></i>
+      <span>AI 身份</span><i></i><span>AI 形象</span><i></i><span>数据与记忆</span><i></i><span>模型与技能</span><i></i><span>智能体协作</span><i></i><span>AI 金融</span><i></i><span>算力结算</span><i></i><span>内容溯源</span><i></i><span>授权治理</span><i></i>
+    </div>
+  </div>
+
+  <section class="section" id="services">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="section-label" data-reveal><span class="mono">01</span> FULL LIFECYCLE</p>
+          <h2 data-reveal data-delay="1">不是一条通用链，<br>而是 AI 的完整生命周期。</h2>
+        </div>
+        <p class="section-desc" data-reveal data-delay="2">
+          围绕 AI 主体从诞生到治理的真实需求重新设计资源模型。
+          身份、形象、数据、模型、协作与结算，全部在同一条链上完成确权与流转。
+        </p>
+      </div>
+
+      <div class="stage-rail" data-reveal>
+        <div class="stage"><span class="mono">01</span><b>诞生</b><em>Identity &amp; Form</em></div>
+        <div class="stage"><span class="mono">02</span><b>成长</b><em>Data &amp; Model</em></div>
+        <div class="stage"><span class="mono">03</span><b>协作</b><em>Agent Mesh</em></div>
+        <div class="stage"><span class="mono">04</span><b>流通</b><em>Value Flow</em></div>
+        <div class="stage"><span class="mono">05</span><b>治理</b><em>Policy &amp; Audit</em></div>
+      </div>
+
+      <div class="service-grid">
+        <article class="service-card" data-reveal>
+          <div class="card-top"><span class="card-index mono">01</span><span class="stage-chip">诞生</span></div>
+          <div class="card-icon"><svg class="icon"><use href="#i-id"/></svg></div>
+          <h3>AI 身份</h3>
+          <p>为每个 AI 主体建立可信身份。企业 KYC、智能体账户、可验证凭证与权限边界，一次签发，全网可验。</p>
+          <div class="card-tags"><span class="mono">KYCRegistry</span><span class="mono">AIAccountFactory</span></div>
+        </article>
+
+        <article class="service-card" data-reveal data-delay="1">
+          <div class="card-top"><span class="card-index mono">02</span><span class="stage-chip">诞生</span></div>
+          <div class="card-icon"><svg class="icon"><use href="#i-avatar"/></svg></div>
+          <h3>AI 形象</h3>
+          <p>形象即资产。以唯一组合哈希完成 AI 形象确权，铸造后永久锁定，支持展示、授权与合规流转。</p>
+          <div class="card-tags"><span class="mono">LinkSpriteNFT</span><span class="mono">compositionHash</span></div>
+        </article>
+
+        <article class="service-card" data-reveal data-delay="2">
+          <div class="card-top"><span class="card-index mono">03</span><span class="stage-chip">成长</span></div>
+          <div class="card-icon"><svg class="icon"><use href="#i-data"/></svg></div>
+          <h3>数据与记忆</h3>
+          <p>训练数据、记忆与上下文的授权边界。记录谁在何时、以何种范围使用了数据，让授权可撤回、使用可审计。</p>
+          <div class="card-tags"><span class="mono">AuthorizationRegistry</span><span class="mono">Usage Audit</span></div>
+        </article>
+
+        <article class="service-card" data-reveal>
+          <div class="card-top"><span class="card-index mono">04</span><span class="stage-chip">成长</span></div>
+          <div class="card-icon"><svg class="icon"><use href="#i-model"/></svg></div>
+          <h3>模型与技能</h3>
+          <p>模型版本、技能与工作流的知识产权确权。许可范围、调用次数与收益规则写入链上，按规则自动结算。</p>
+          <div class="card-tags"><span class="mono">Model IP</span><span class="mono">License</span></div>
+        </article>
+
+        <article class="service-card" data-reveal data-delay="1">
+          <div class="card-top"><span class="card-index mono">05</span><span class="stage-chip">协作</span></div>
+          <div class="card-icon"><svg class="icon"><use href="#i-agent"/></svg></div>
+          <h3>智能体协作</h3>
+          <p>Agent-to-Agent 的委托、调用与结算。为每个智能体发放能力凭证，跨平台协作也可信、可计费、可追责。</p>
+          <div class="card-tags"><span class="mono">A2A Auth</span><span class="mono">Capability</span></div>
+        </article>
+
+        <article class="service-card" data-reveal data-delay="2">
+          <div class="card-top"><span class="card-index mono">06</span><span class="stage-chip">流通</span></div>
+          <div class="card-icon"><svg class="icon"><use href="#i-finance"/></svg></div>
+          <h3>AI 金融</h3>
+          <p>面向 AI 的可编程价值流。Gas 代付、按次计费、收益分账与自动清算，让每一笔 AI 收入都有迹可循。</p>
+          <div class="card-tags"><span class="mono">Paymaster</span><span class="mono">SpriteComputeToken</span></div>
+        </article>
+
+        <article class="service-card" data-reveal>
+          <div class="card-top"><span class="card-index mono">07</span><span class="stage-chip">流通</span></div>
+          <div class="card-icon"><svg class="icon"><use href="#i-compute"/></svg></div>
+          <h3>算力与资源</h3>
+          <p>把 GPU、模型调用与推理服务变成可计量、可结算的链上资源，按实际使用量完成撮合与清算。</p>
+          <div class="card-tags"><span class="mono">Metering</span><span class="mono">Settlement</span></div>
+        </article>
+
+        <article class="service-card" data-reveal data-delay="1">
+          <div class="card-top"><span class="card-index mono">08</span><span class="stage-chip">流通</span></div>
+          <div class="card-icon"><svg class="icon"><use href="#i-provenance"/></svg></div>
+          <h3>内容溯源</h3>
+          <p>生成内容的来源、模型与授权链上留痕。为合规审核、版权主张与平台治理提供不可篡改的证据。</p>
+          <div class="card-tags"><span class="mono">Provenance</span><span class="mono">Audit Trail</span></div>
+        </article>
+
+        <article class="service-card" data-reveal data-delay="2">
+          <div class="card-top"><span class="card-index mono">09</span><span class="stage-chip">治理</span></div>
+          <div class="card-icon"><svg class="icon"><use href="#i-governance"/></svg></div>
+          <h3>授权与治理</h3>
+          <p>细粒度授权、转移策略与操作审计。企业可按产品、角色与场景控制资产流转，风险始终可追溯。</p>
+          <div class="card-tags"><span class="mono">TransferPolicy</span><span class="mono">Multi-tenant</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="advantages">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="section-label" data-reveal><span class="mono">02</span> WHY LINKELF</p>
+          <h2 data-reveal data-delay="1">为 AI 企业而建，<br>不是通用链的再包装。</h2>
+        </div>
+        <p class="section-desc" data-reveal data-delay="2">
+          我们只服务 AI 这一个方向。合约、资源模型与计费方式，都围绕 AI 的真实生命周期展开。
+        </p>
+      </div>
+
+      <div class="adv-grid">
+        <article class="adv-card" data-reveal>
+          <span class="ghost-num">01</span>
+          <div class="card-icon"><svg class="icon"><use href="#i-layers"/></svg></div>
+          <h3>AI 原生资源模型</h3>
+          <p>围绕 AI 主体、形象、数据与智能体设计链上资源，业务语义直接落在合约层，而不是生搬通用资产模型。</p>
+        </article>
+        <article class="adv-card" data-reveal data-delay="1">
+          <span class="ghost-num">02</span>
+          <div class="card-icon"><svg class="icon"><use href="#i-shield"/></svg></div>
+          <h3>国产联盟链底座</h3>
+          <p>基于 FISCO BCOS 联盟链，标准 TLS 与 ECDSA 加密，支持国产化部署与合规审计要求。</p>
+        </article>
+        <article class="adv-card" data-reveal data-delay="2">
+          <span class="ghost-num">03</span>
+          <div class="card-icon"><svg class="icon"><use href="#i-provenance"/></svg></div>
+          <h3>确权结果可验证</h3>
+          <p>组合哈希保证形象唯一，链上元数据与授权记录不可篡改，争议可回溯到具体区块与交易。</p>
+        </article>
+        <article class="adv-card" data-reveal>
+          <span class="ghost-num">04</span>
+          <div class="card-icon"><svg class="icon"><use href="#i-finance"/></svg></div>
+          <h3>价值流可编程</h3>
+          <p>Paymaster 代付与权益 Token 让计费、分账与结算自动执行，减少人工对账与坏账风险。</p>
+        </article>
+        <article class="adv-card" data-reveal data-delay="1">
+          <span class="ghost-num">05</span>
+          <div class="card-icon"><svg class="icon"><use href="#i-key"/></svg></div>
+          <h3>多租户安全隔离</h3>
+          <p>每个产品独立 API Key、权限范围、QPS 与日配额，调用全程审计，租户之间互不越界。</p>
+        </article>
+        <article class="adv-card" data-reveal data-delay="2">
+          <span class="ghost-num">06</span>
+          <div class="card-icon"><svg class="icon"><use href="#i-api"/></svg></div>
+          <h3>轻量 HTTP 接入</h3>
+          <p>标准 HTTP API，无需改造现有业务即可获得链上能力。已支撑 OpenElf 等产品接入，持续扩展中。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="architecture">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="section-label" data-reveal><span class="mono">03</span> ARCHITECTURE</p>
+          <h2 data-reveal data-delay="1">六层架构，<br>一条可信链路。</h2>
+        </div>
+        <p class="section-desc" data-reveal data-delay="2">
+          从产品接入到链上存证，每一层独立演进。上层业务无需理解链，下层能力可持续扩展。
+        </p>
+      </div>
+
+      <div class="arch-panel" data-reveal>
+        <div class="arch-layers">
+          <div class="arch-layer">
+            <span class="layer-no mono">L6</span>
+            <div><b>产品层</b><em>PRODUCT</em></div>
+            <p>OpenElf · KOKO · 更多 AI 产品</p>
+          </div>
+          <div class="arch-layer">
+            <span class="layer-no mono">L5</span>
+            <div><b>接入层</b><em>ACCESS</em></div>
+            <p>Nginx · 多租户鉴权 · QPS 与配额 · 审计日志</p>
+          </div>
+          <div class="arch-layer">
+            <span class="layer-no mono">L4</span>
+            <div><b>能力层</b><em>CAPABILITY</em></div>
+            <p>身份 / 形象 / 授权 / 支付 / 算力 / 溯源</p>
+          </div>
+          <div class="arch-layer">
+            <span class="layer-no mono">L3</span>
+            <div><b>合约层</b><em>CONTRACT</em></div>
+            <p>7 个核心智能合约 · 业务规则上链</p>
+          </div>
+          <div class="arch-layer">
+            <span class="layer-no mono">L2</span>
+            <div><b>链层</b><em>LEDGER</em></div>
+            <p>FISCO BCOS 3.7 · 联盟链 · ECDSA</p>
+          </div>
+          <div class="arch-layer">
+            <span class="layer-no mono">L1</span>
+            <div><b>查询层</b><em>EXPLORER</em></div>
+            <p>区块 / 交易 / Token / 授权 · 公开可查</p>
+          </div>
+        </div>
+
+        <div class="contract-panel">
+          <div class="contract-head">
+            <span class="mono">CORE CONTRACTS</span>
+            <span class="live-badge"><span class="status-dot"></span>已部署</span>
+          </div>
+          <ol class="contract-list">
+            <li><span class="mono">01</span><div><b>AIAccountFactory</b><em>AI 主体账户工厂</em></div></li>
+            <li><span class="mono">02</span><div><b>KYCRegistry</b><em>企业与主体身份认证</em></div></li>
+            <li><span class="mono">03</span><div><b>LinkSpriteNFT</b><em>AI 形象与资产确权</em></div></li>
+            <li><span class="mono">04</span><div><b>AuthorizationRegistry</b><em>授权与调用登记</em></div></li>
+            <li><span class="mono">05</span><div><b>Paymaster</b><em>Gas 代付与支付策略</em></div></li>
+            <li><span class="mono">06</span><div><b>SpriteComputeToken</b><em>算力与权益凭证</em></div></li>
+            <li><span class="mono">07</span><div><b>TransferPolicy</b><em>转移与流通规则</em></div></li>
+          </ol>
+          <a class="text-link" href="/browser/#/tokens">在浏览器中查看链上资产<span class="arrow-mark">↗</span></a>
+        </div>
+      </div>
+
+      <div class="tech-chips" data-reveal>
+        <span class="mono">FISCO BCOS 3.7</span>
+        <span class="mono">Solidity</span>
+        <span class="mono">Java</span>
+        <span class="mono">MariaDB</span>
+        <span class="mono">SHA-256</span>
+        <span class="mono">ECDSA</span>
+        <span class="mono">TLS</span>
+        <span class="mono">HTTP API</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="solutions">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="section-label" data-reveal><span class="mono">04</span> SOLUTIONS</p>
+          <h2 data-reveal data-delay="1">不同 AI 业务，<br>同一套可信底座。</h2>
+        </div>
+        <p class="section-desc" data-reveal data-delay="2">
+          无论你做内容、智能体、硬件还是模型服务，都可以按需组合身份、授权、结算与溯源能力。
+        </p>
+      </div>
+
+      <div class="tabs" data-reveal>
+        <div class="tab-list" role="tablist" aria-label="解决方案">
+          <button class="tab is-active" role="tab" aria-selected="true" aria-controls="panel-creator" id="tab-creator" data-tab="creator">AI 内容与创作者</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-agent" id="tab-agent" data-tab="agent">AI 智能体平台</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-embodied" id="tab-embodied" data-tab="embodied">具身智能与硬件</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-model" id="tab-model" data-tab="model">模型与企业服务</button>
+        </div>
+
+        <div class="tab-panels">
+          <div class="tab-panel is-active" id="panel-creator" role="tabpanel" aria-labelledby="tab-creator">
+            <div class="panel-copy">
+              <h3>让每一个 AI 形象，<br>都拥有可验证的所有权。</h3>
+              <p>创作者完成形象生成后即上链确权，平台与品牌方通过授权使用，收益按规则自动分账。</p>
+              <ul class="bullet-list">
+                <li><b>形象确权</b><span>唯一组合哈希，链上永久锁定，所有权清晰可查。</span></li>
+                <li><b>授权分发</b><span>按场景、期限与用途签发授权，二级使用可追踪。</span></li>
+                <li><b>收益分账</b><span>平台、创作者与模型方按约定比例自动结算。</span></li>
+                <li><b>内容存证</b><span>保留生成来源与模型信息，支撑合规审核与版权主张。</span></li>
+              </ul>
+            </div>
+            <div class="panel-card">
+              <span class="mono panel-card-label">ON-CHAIN FLOW</span>
+              <ol class="flow-list">
+                <li><span>01</span><div><b>生成形象</b><em>配件组合 · 唯一哈希</em></div></li>
+                <li><span>02</span><div><b>铸造确权</b><em>LinkSpriteNFT</em></div></li>
+                <li><span>03</span><div><b>签发授权</b><em>AuthorizationRegistry</em></div></li>
+                <li><span>04</span><div><b>使用分账</b><em>Paymaster · 自动结算</em></div></li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="panel-agent" role="tabpanel" aria-labelledby="tab-agent" hidden>
+            <div class="panel-copy">
+              <h3>让智能体之间的协作，<br>可授权、可计费、可追责。</h3>
+              <p>每个 Agent 拥有独立身份与能力凭证，跨平台调用时可以验证权限、计量用量并自动清算。</p>
+              <ul class="bullet-list">
+                <li><b>智能体身份</b><span>独立账户与可验证凭证，区分人、企业与 Agent。</span></li>
+                <li><b>能力授权</b><span>调用范围、次数与时效链上约束，越权即失败。</span></li>
+                <li><b>A2A 结算</b><span>智能体之间的调用按次计费，收入自动清算。</span></li>
+                <li><b>调用审计</b><span>全链路留痕，异常行为可定位到具体交易。</span></li>
+              </ul>
+            </div>
+            <div class="panel-card">
+              <span class="mono panel-card-label">ON-CHAIN FLOW</span>
+              <ol class="flow-list">
+                <li><span>01</span><div><b>注册 Agent</b><em>AIAccountFactory</em></div></li>
+                <li><span>02</span><div><b>签发能力</b><em>Capability Credential</em></div></li>
+                <li><span>03</span><div><b>跨平台调用</b><em>AuthorizationRegistry</em></div></li>
+                <li><span>04</span><div><b>按次清算</b><em>Paymaster · Token</em></div></li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="panel-embodied" role="tabpanel" aria-labelledby="tab-embodied" hidden>
+            <div class="panel-copy">
+              <h3>从出厂到退役，<br>每台设备都有可信履历。</h3>
+              <p>为设备与机器人建立一机一码的身份，采集数据、算力贡献与维护记录全部可验证。</p>
+              <ul class="bullet-list">
+                <li><b>设备身份</b><span>一机一码，出厂即登记，来源与型号可验证。</span></li>
+                <li><b>数据确权</b><span>采集数据的归属与使用范围清晰可查。</span></li>
+                <li><b>算力结算</b><span>边缘算力与推理服务按量计量、自动结算。</span></li>
+                <li><b>生命周期存证</b><span>维护、升级与流转记录不可篡改。</span></li>
+              </ul>
+            </div>
+            <div class="panel-card">
+              <span class="mono panel-card-label">ON-CHAIN FLOW</span>
+              <ol class="flow-list">
+                <li><span>01</span><div><b>设备登记</b><em>Device Identity</em></div></li>
+                <li><span>02</span><div><b>数据授权</b><em>Scoped Consent</em></div></li>
+                <li><span>03</span><div><b>算力计量</b><em>SpriteComputeToken</em></div></li>
+                <li><span>04</span><div><b>履历存证</b><em>Immutable Log</em></div></li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="panel-model" role="tabpanel" aria-labelledby="tab-model" hidden>
+            <div class="panel-copy">
+              <h3>模型与调用之间，<br>有一条可审计的价值链。</h3>
+              <p>模型版本、训练数据指纹与许可规则上链，API 调用可计量，收入可按约定自动分账。</p>
+              <ul class="bullet-list">
+                <li><b>模型 IP 确权</b><span>版本、权重与训练数据指纹上链存证。</span></li>
+                <li><b>企业 KYC</b><span>主体资质与权限分级，满足合规准入要求。</span></li>
+                <li><b>API 计费</b><span>调用量可计量，平台与模型方自动分账。</span></li>
+                <li><b>合规审计</b><span>面向监管与客户输出可验证的审计证据。</span></li>
+              </ul>
+            </div>
+            <div class="panel-card">
+              <span class="mono panel-card-label">ON-CHAIN FLOW</span>
+              <ol class="flow-list">
+                <li><span>01</span><div><b>模型登记</b><em>Model Fingerprint</em></div></li>
+                <li><span>02</span><div><b>许可签发</b><em>License Scope</em></div></li>
+                <li><span>03</span><div><b>调用计量</b><em>Usage Metering</em></div></li>
+                <li><span>04</span><div><b>收入分账</b><em>Revenue Split</em></div></li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="ecosystem">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="section-label" data-reveal><span class="mono">05</span> ECOSYSTEM</p>
+          <h2 data-reveal data-delay="1">一条链，<br>服务多个 AI 产品。</h2>
+        </div>
+        <p class="section-desc" data-reveal data-delay="2">
+          链接精灵是独立的联盟链能力层，不绑定任何单一产品。每个接入方拥有独立的租户空间、密钥与配额。
+        </p>
+      </div>
+
+      <div class="eco-diagram" data-reveal>
+        <div class="eco-products">
+          <div class="eco-product is-live">
+            <span class="mono">PRODUCT / 01</span>
+            <b>OpenElf</b>
+            <em>AI 创作与角色平台</em>
+            <span class="eco-status">已接入</span>
+          </div>
+          <div class="eco-product">
+            <span class="mono">PRODUCT / 02</span>
+            <b>KOKO</b>
+            <em>AI 内容与社区</em>
+            <span class="eco-status is-pending">接入中</span>
+          </div>
+          <div class="eco-product is-open">
+            <span class="mono">PRODUCT / 03</span>
+            <b>你的产品</b>
+            <em>AI 应用 · 智能体 · 硬件</em>
+            <span class="eco-status is-open">开放接入</span>
+          </div>
+        </div>
+        <div class="eco-connector" aria-hidden="true"><span></span></div>
+        <div class="eco-core">
+          <div class="eco-core-brand">
+            <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">
+              <polygon points="24,3 43,13.5 43,34.5 24,45 5,34.5 5,13.5" fill="none" stroke="url(#brandGrad)" stroke-width="1.6"/>
+              <circle cx="24" cy="24" r="4.2" fill="#c8ff4d"/>
+              <circle cx="24" cy="11" r="1.8" fill="currentColor" opacity=".7"/>
+              <circle cx="35.5" cy="30.5" r="1.8" fill="currentColor" opacity=".55"/>
+              <circle cx="12.5" cy="30.5" r="1.8" fill="currentColor" opacity=".55"/>
+            </svg>
+            <div><b>链接精灵 LinkElf</b><em>多租户 · 确权 · 授权 · 结算 · 审计</em></div>
+          </div>
+          <div class="eco-contracts">
+            <span class="mono">AIAccountFactory</span>
+            <span class="mono">KYCRegistry</span>
+            <span class="mono">LinkSpriteNFT</span>
+            <span class="mono">AuthorizationRegistry</span>
+            <span class="mono">Paymaster</span>
+            <span class="mono">SpriteComputeToken</span>
+            <span class="mono">TransferPolicy</span>
+          </div>
+        </div>
+        <div class="eco-connector" aria-hidden="true"><span></span></div>
+        <div class="eco-chain">
+          <span class="mono">SETTLEMENT LAYER</span>
+          <b>FISCO BCOS 联盟链</b>
+          <em>真实出块 · 只读索引 · 公开可查</em>
+          <a class="text-link" href="/browser/">打开区块链浏览器<span class="arrow-mark">↗</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="roadmap">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <p class="section-label" data-reveal><span class="mono">06</span> ROADMAP</p>
+          <h2 data-reveal data-delay="1">先把信任做扎实，<br>再把生态做宽。</h2>
+        </div>
+        <p class="section-desc" data-reveal data-delay="2">
+          链、合约、多租户与浏览器已经落地。接下来，把 AI 身份、授权市场与智能体协作逐步开放。
+        </p>
+      </div>
+
+      <div class="timeline">
+        <article class="tl-item is-done" data-reveal>
+          <span class="tl-dot"></span>
+          <span class="mono tl-time">2026 Q3</span>
+          <h3>链与核心合约上线</h3>
+          <p>FISCO BCOS 单链部署，7 个核心合约完成部署并真实出块。</p>
+          <span class="tl-tag">已上线</span>
+        </article>
+        <article class="tl-item is-done" data-reveal data-delay="1">
+          <span class="tl-dot"></span>
+          <span class="mono tl-time">2026 Q4</span>
+          <h3>多租户与区块链浏览器</h3>
+          <p>租户鉴权、配额与审计上线；公开浏览器支持区块、交易、Token 与授权查询。</p>
+          <span class="tl-tag">已上线</span>
+        </article>
+        <article class="tl-item is-now" data-reveal data-delay="2">
+          <span class="tl-dot"></span>
+          <span class="mono tl-time">2027 Q1</span>
+          <h3>AI 身份与形象规模化</h3>
+          <p>身份凭证、形象确权与授权市场面向更多 AI 产品开放。</p>
+          <span class="tl-tag">进行中</span>
+        </article>
+        <article class="tl-item" data-reveal>
+          <span class="tl-dot"></span>
+          <span class="mono tl-time">2027 Q2</span>
+          <h3>智能体协作与算力结算</h3>
+          <p>A2A 授权、按次计费与算力资源撮合进入生产环境。</p>
+          <span class="tl-tag is-plan">规划中</span>
+        </article>
+        <article class="tl-item" data-reveal data-delay="1">
+          <span class="tl-dot"></span>
+          <span class="mono tl-time">2027+</span>
+          <h3>联盟开放与跨链互操作</h3>
+          <p>引入生态联盟节点，探索与更多可信网络的跨链协作。</p>
+          <span class="tl-tag is-plan">规划中</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section" id="contact">
+    <div class="cta-orb" aria-hidden="true"></div>
+    <div class="wrap cta-inner" data-reveal>
+      <p class="section-label"><span class="mono">JOIN THE TRUST LAYER</span></p>
+      <h2>把信任，写进 AI 的每一步。</h2>
+      <p>无论你在做 AI 内容、智能体、具身智能还是模型服务，链接精灵都能为你补上可信这一层。</p>
+      <div class="cta-actions">
+        <a class="btn" href="#wechat" data-wechat-open>接入咨询<svg class="icon"><use href="#i-arrow"/></svg></a>
+        <a class="btn btn-ghost" href="/browser/">打开区块链浏览器<span class="arrow-mark">↗</span></a>
+      </div>
+      <p class="cta-note mono">SUPPORT@OPENELFAI.COM · LINKELF.WORK</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-main">
+    <div class="footer-brand">
+      <a class="brand" href="#top">
+        <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">
+          <polygon points="24,3 43,13.5 43,34.5 24,45 5,34.5 5,13.5" fill="none" stroke="url(#brandGrad)" stroke-width="1.6"/>
+          <circle cx="24" cy="24" r="4.2" fill="#c8ff4d"/>
+          <circle cx="24" cy="11" r="1.8" fill="currentColor" opacity=".7"/>
+          <circle cx="35.5" cy="30.5" r="1.8" fill="currentColor" opacity=".55"/>
+          <circle cx="12.5" cy="30.5" r="1.8" fill="currentColor" opacity=".55"/>
+        </svg>
+        <span class="brand-text">链接精灵<span class="brand-en">LINKELF</span></span>
+      </a>
+      <p>AI 原生可信链接层。<br>为 AI 全生命周期提供确权、授权、结算与审计。</p>
+    </div>
+    <div class="footer-col">
+      <b>能力</b>
+      <a href="#services">AI 身份</a>
+      <a href="#services">AI 形象</a>
+      <a href="#services">AI 金融</a>
+      <a href="#services">智能体协作</a>
+    </div>
+    <div class="footer-col">
+      <b>资源</b>
+      <a href="/browser/">区块链浏览器</a>
+      <a href="#architecture">技术架构</a>
+      <a href="#roadmap">演进路线</a>
+      <a href="#wechat" data-wechat-open>接入咨询</a>
+    </div>
+    <div class="footer-col">
+      <b>关于</b>
+      <a href="https://openelfai.com/">OpenElf</a>
+      <a href="https://openelfai.com/terms">服务条款</a>
+      <a href="https://openelfai.com/privacy">隐私政策</a>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span>© <span id="year">2026</span> 链接精灵 LinkElf · 由 OpenElf 团队构建</span>
+    <span class="mono">BUILT ON FISCO BCOS · AI-NATIVE</span>
+  </div>
+</footer>
+
+<div class="wechat-modal" id="wechat-modal" hidden role="dialog" aria-modal="true" aria-labelledby="wechat-title">
+  <div class="wechat-backdrop" data-wechat-close></div>
+  <div class="wechat-card">
+    <button class="wechat-close" type="button" data-wechat-close aria-label="关闭">×</button>
+    <p class="wechat-label mono">ACCESS CONSULTING</p>
+    <h3 id="wechat-title">添加微信，1 对 1 接入咨询</h3>
+    <img class="wechat-qr" src="wechat-qr.jpg" alt="链接精灵接入咨询微信二维码" width="220" height="220">
+    <div class="wechat-id-row">
+      <span class="wechat-id mono" id="wechat-id">KonglingApp_com</span>
+      <button class="wechat-copy" type="button" id="wechat-copy">复制微信号</button>
+    </div>
+    <p class="wechat-hint">微信扫码，或搜索微信号添加，备注「LinkElf 接入」</p>
+  </div>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>

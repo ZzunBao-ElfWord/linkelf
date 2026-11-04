@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>免费沙箱 · 链接精灵 LinkElf</title>
+  <meta name="description" content="免费申请链接精灵区块链沙箱租户，30 天验证期，自助获取 API Key，用于 AI 内容存证、AI 形象确权与授权结算的技术验证。">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="sandbox.css">
+</head>
+<body class="sandbox-page">
+
+<header class="site-header is-scrolled" id="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="/">
+      <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">
+        <polygon points="24,3 43,13.5 43,34.5 24,45 5,34.5 5,13.5" fill="none" stroke="#c8ff4d" stroke-width="1.6"/>
+        <circle cx="24" cy="24" r="4.2" fill="#c8ff4d"/>
+        <circle cx="24" cy="11" r="1.8" fill="#57e9ff" opacity=".7"/>
+        <circle cx="35.5" cy="30.5" r="1.8" fill="#57e9ff" opacity=".55"/>
+        <circle cx="12.5" cy="30.5" r="1.8" fill="#57e9ff" opacity=".55"/>
+      </svg>
+      <span class="brand-text">链接精灵<span class="brand-en">LINKELF</span></span>
+    </a>
+    <nav class="site-nav">
+      <a href="/#services">能力</a>
+      <a href="/#architecture">架构</a>
+      <a href="/#solutions">方案</a>
+      <a href="/browser/">区块链浏览器</a>
+    </nav>
+    <div class="header-actions">
+      <a class="btn btn-sm" href="/#wechat" data-wechat-hint>接入咨询</a>
+      <a class="btn btn-sm btn-ghost" href="/">返回官网</a>
+    </div>
+  </div>
+</header>
+
+<main class="sbx-main">
+  <div class="wrap">
+
+    <section class="sbx-hero">
+      <p class="section-label"><span class="mono">FREE SANDBOX</span></p>
+      <h1>先验证，再签约。<br><em>免费沙箱，30 天跑通你的第一个上链场景。</em></h1>
+      <p class="sbx-lead">
+        自助申请独立租户与 API Key，费用全免。配额受限但能力完整，
+        足够完成一次真实的技术验证——不需要等商务流程，不需要预付款。
+      </p>
+      <div class="sbx-metrics">
+        <div><b>30</b><span>天有效期</span></div>
+        <div><b>3</b><span>QPS 上限</span></div>
+        <div><b>500</b><span>次 / 日调用</span></div>
+        <div><b>¥0</b><span>费用</span></div>
+      </div>
+      <p class="sbx-notice mono">SANDBOX ISOLATED BY productId · KEY SHOWN ONCE · AUTO-REVOKED AFTER 30 DAYS</p>
+    </section>
+
+    <div class="sbx-grid">
+
+      <section class="sbx-card" id="apply-card">
+        <div class="sbx-card-head">
+          <h2>申请免费沙箱</h2>
+          <p>提交后立即获得 API Key，无需人工审核。</p>
+        </div>
+
+        <form id="apply-form" class="sbx-form" autocomplete="off">
+          <div class="field">
+            <label for="company">企业 / 团队名称 <span>*</span></label>
+            <input id="company" name="company" type="text" maxlength="60" required placeholder="例如：某某智能科技">
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="contact">联系人 <span>*</span></label>
+              <input id="contact" name="contact" type="text" maxlength="40" required placeholder="姓名或称呼">
+            </div>
+            <div class="field">
+              <label for="email">邮箱 <span>*</span></label>
+              <input id="email" name="email" type="email" maxlength="120" required placeholder="用于找回沙箱状态">
+            </div>
+          </div>
+          <div class="field">
+            <label for="scene">使用场景 <span>*</span></label>
+            <select id="scene" name="scene" required>
+              <option value="">请选择</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="note">补充说明（选填）</label>
+            <textarea id="note" name="note" maxlength="200" rows="3" placeholder="想验证的具体能力、预计调用量等"></textarea>
+          </div>
+          <label class="sbx-consent">
+            <input id="consent" type="checkbox" required>
+            <span>我已了解：链上数据不可物理删除，沙箱仅用于技术验证，30 天后自动吊销。</span>
+          </label>
+          <button class="btn sbx-submit" type="submit" id="apply-btn">立即获取 API Key<svg class="icon"><use href="#i-arrow"/></svg></button>
+          <p class="sbx-error" id="apply-error" hidden></p>
+        </form>
+      </section>
+
+      <aside class="sbx-side">
+        <div class="sbx-side-block">
+          <h3>沙箱包含什么</h3>
+          <ul class="sbx-list">
+            <li>独立 productId 命名空间，数据与正式租户隔离</li>
+            <li>可读写：身份、形象、内容存证、授权、KYC、AI 账号</li>
+            <li>公开区块链浏览器实时可查</li>
+            <li>30 天到期自动吊销，可随时升级为正式租户</li>
+          </ul>
+        </div>
+        <div class="sbx-side-block">
+          <h3>沙箱不包含</h3>
+          <ul class="sbx-list sbx-list-muted">
+            <li>资金类接口（钱包、Token 结算、合约部署）</li>
+            <li>SLA 保障与专属技术支持</li>
+            <li>定制合约与定制浏览器页</li>
+          </ul>
+        </div>
+        <div class="sbx-side-block sbx-side-cta">
+          <h3>需要更大额度？</h3>
+          <p>正式租户支持更高 QPS、更大日配额与资金类能力，可联系商务评估。</p>
+          <a class="sbx-link" href="/#wechat" data-wechat-hint>联系商务 →</a>
+        </div>
+      </aside>
+    </div>
+
+    <section class="sbx-result" id="result-card" hidden>
+      <div class="sbx-result-head">
+        <span class="status-dot"></span>
+        <h2>沙箱已开通</h2>
+      </div>
+      <p class="sbx-result-warn">API Key 仅显示这一次，请立即复制并妥善保存。关闭页面后无法再次获取。</p>
+      <div class="sbx-keybox">
+        <label class="mono">YOUR API KEY</label>
+        <code id="result-key"></code>
+        <button class="wechat-copy" type="button" id="copy-key">复制</button>
+      </div>
+      <dl class="sbx-result-meta">
+        <div><dt>沙箱 ID</dt><dd id="result-product"></dd></div>
+        <div><dt>到期时间</dt><dd id="result-expires"></dd></div>
+        <div><dt>配额</dt><dd id="result-quota"></dd></div>
+        <div><dt>可用能力</dt><dd id="result-scopes"></dd></div>
+      </dl>
+      <div class="sbx-codeblock">
+        <label class="mono">QUICK START</label>
+        <pre id="result-curl"></pre>
+      </div>
+      <div class="sbx-result-actions">
+        <button class="btn btn-ghost" type="button" id="apply-again">再申请一个</button>
+        <a class="btn" href="/#wechat" data-wechat-hint>升级正式租户</a>
+      </div>
+    </section>
+
+    <section class="sbx-lookup">
+      <div class="sbx-card-head">
+        <h2>查询沙箱状态</h2>
+        <p>用申请时的邮箱与沙箱 ID 查询到期时间、剩余天数与配额。</p>
+      </div>
+      <form id="lookup-form" class="sbx-form sbx-form-inline">
+        <div class="field">
+          <label for="lk-email">邮箱</label>
+          <input id="lk-email" type="email" required placeholder="申请时填写的邮箱">
+        </div>
+        <div class="field">
+          <label for="lk-product">沙箱 ID</label>
+          <input id="lk-product" type="text" required placeholder="sandbox-xxxxxxxx">
+        </div>
+        <button class="btn btn-ghost" type="submit">查询</button>
+      </form>
+      <div class="sbx-lookup-result" id="lookup-result" hidden></div>
+      <p class="sbx-error" id="lookup-error" hidden></p>
+    </section>
+
+    <section class="sbx-steps">
+      <p class="section-label"><span class="mono">HOW IT WORKS</span></p>
+      <div class="sbx-steps-grid">
+        <div>
+          <b class="mono">01</b>
+          <h3>拿到 Key</h3>
+          <p>提交表单，立即返回独立 API Key 与 productId。</p>
+        </div>
+        <div>
+          <b class="mono">02</b>
+          <h3>调通接口</h3>
+          <p>用 <code>X-API-Key</code> 请求头调用接口，先跑通健康检查与一次存证。</p>
+        </div>
+        <div>
+          <b class="mono">03</b>
+          <h3>浏览器验证</h3>
+          <p>在区块链浏览器按产品筛选，确认你的数据已真实上链。</p>
+        </div>
+        <div>
+          <b class="mono">04</b>
+          <h3>决定是否升级</h3>
+          <p>验证通过后联系商务升级正式租户，沙箱数据可保留。</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-bottom">
+    <span>© <span id="year">2026</span> 链接精灵 LinkElf · 由 OpenElf 团队构建</span>
+    <span class="mono">BUILT ON FISCO BCOS · AI-NATIVE</span>
+  </div>
+</footer>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+</svg>
+
+<script src="sandbox.js"></script>
+</body>
+</html>
