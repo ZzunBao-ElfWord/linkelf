@@ -43,14 +43,18 @@ linkelf/
 ├── README.md
 ├── LICENSE
 ├── .gitignore
-├── linkelf-site/              # 🌐 linkelf.work 官网
-│   ├── index.html             # 首页
-│   ├── main.js                # 交互逻辑
-│   ├── styles.css             # 样式
+├── linkelf-site/              # 🌐 linkelf.work 官网 + 浏览器 + 沙箱
+│   ├── index.html             # 官网首页
+│   ├── main.js                # 官网交互
+│   ├── styles.css             # 官网样式
 │   ├── favicon.svg
 │   ├── wechat-qr.jpg          # 商务微信二维码
 │   ├── serve.py               # 本地静态服务器（Python 3，零依赖）
-│   ├── sandbox/               # 沙箱自助申请页
+│   ├── browser/               # 📜 LinkSprite Explorer · 轻量区块链浏览器
+│   │   ├── index.html         # 5 个路由：概览 / 区块 / 交易 / Token / 授权
+│   │   ├── app.js             # 浏览器前端逻辑（搜索 + 分页 + API 调用）
+│   │   └── app.css
+│   ├── sandbox/               # 🧪 沙箱自助申请页（前端）
 │   │   ├── index.html
 │   │   ├── sandbox.css
 │   │   └── sandbox.js
